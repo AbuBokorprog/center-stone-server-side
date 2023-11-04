@@ -14,16 +14,16 @@ app.use(router);
 // const uri = `mongodb+srv://${process.env.S3_BUCKET}:${process.env.SECRET_KEY}@cluster0.kq57d4a.mongodb.net/?retryWrites=true&w=majority`;
 const Name = "CenterStoneServer";
 
-// router.get("/jewelry", async (req, res) => {
-//   try {
-//     const result = await jewelry.find();
-//     res.status(200).json(result);
-//   } catch (err) {
-//     res.status(500).json({
-//       error: err.message,
-//     });
-//   }
-// });
+router.get("/jewelry", async (req, res) => {
+  try {
+    const result = await jewelry.find();
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(500).json({
+      error: err.message,
+    });
+  }
+});
 
 router.post("/jewelry", async (req, res) => {
   try {
