@@ -25,17 +25,17 @@ const Name = "CenterStoneServer";
 //   }
 // });
 
-// router.post("/jewelry", async (req, res) => {
-//   try {
-//     const newJewelry = new jewelry(req.body);
-//     const result = await newJewelry.save();
-//     console.log(result);
-//     res.status(200).json(result);
-//   } catch (error) {
-//     console.error("Error:", error);
-//     res.status(500).json({ error: "Server side error" });
-//   }
-// });
+router.post("/jewelry", async (req, res) => {
+  try {
+    const newJewelry = new jewelry(req.body);
+    const result = await newJewelry.save();
+    console.log(result);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Server side error" });
+  }
+});
 
 // ----------------------------------------------------
 app.get("/", (req, res) => {
