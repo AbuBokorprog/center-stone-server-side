@@ -12,7 +12,8 @@ app.use(cors());
 app.use(express.json());
 app.use(router);
 
-const Name = "CenterStoneServer";
+// const Name = "CenterStoneServer";
+const uri = `mongodb+srv://${process.env.S3_BUCKET}:${process.env.SECRET_KEY}@cluster0.kq57d4a.mongodb.net/centerStone?retryWrites=true&w=majority`;
 
 router.get("/users", async (req, res) => {
   try {
@@ -74,7 +75,7 @@ function globalError(err, req, res, next) {
 }
 
 mongoose
-  .connect(`mongodb://127.0.0.1:27017/${Name}`)
+  .connect(uri)
   .then(() => {
     console.log("connected successfully");
     app.listen(port, () => {
