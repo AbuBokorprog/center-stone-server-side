@@ -12,10 +12,7 @@ app.use(cors());
 app.use(express.json());
 app.use(router);
 
-// const uri = `mongodb+srv://${process.env.S3_BUCKET}:${process.env.SECRET_KEY}@cluster0.kq57d4a.mongodb.net/?retryWrites=true&w=majority`;
 const Name = "CenterStoneServer";
-
-// --------- Users --------
 
 router.get("/users", async (req, res) => {
   try {
@@ -41,7 +38,6 @@ router.post("/users", async (req, res) => {
   }
 });
 
-// -------Jewelry----------
 router.get("/jewelry", async (req, res) => {
   try {
     const result = await jewelry.find();
