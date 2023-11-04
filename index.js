@@ -38,6 +38,18 @@ router.post("/users", async (req, res) => {
   }
 });
 
+router.post("/jewelry", async (req, res) => {
+  try {
+    const newJewelry = new jewelry(req.body);
+    const result = await newJewelry.save();
+    console.log(result);
+    res.status(200).json(result);
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).json({ error: "Server side error" });
+  }
+});
+
 router.get("/jewelry", async (req, res) => {
   try {
     const result = await jewelry.find();
@@ -49,15 +61,17 @@ router.get("/jewelry", async (req, res) => {
   }
 });
 
-router.post("/jewelry", async (req, res) => {
+router.get("/jewelry/:Name", async (req, res) => {
   try {
-    const newJewelry = new jewelry(req.body);
-    const result = await newJewelry.save();
+    const name = req.params.Name;
+    console.log(name);
+    const result = await jewelry.find({ Name: name });
     console.log(result);
     res.status(200).json(result);
   } catch (error) {
-    console.error("Error:", error);
-    res.status(500).json({ error: "Server side error" });
+    res.status(500).json({
+      error: "This is a server error",
+    });
   }
 });
 
