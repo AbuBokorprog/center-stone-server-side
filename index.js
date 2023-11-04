@@ -4,6 +4,7 @@ require("dotenv").config();
 var cors = require("cors");
 const mongoose = require("mongoose");
 const jewelry = require("./model/jewelry");
+const user = require("./model/User");
 const router = express.Router();
 const port = process.env.PORT;
 
@@ -14,6 +15,33 @@ app.use(router);
 // const uri = `mongodb+srv://${process.env.S3_BUCKET}:${process.env.SECRET_KEY}@cluster0.kq57d4a.mongodb.net/?retryWrites=true&w=majority`;
 const Name = "CenterStoneServer";
 
+// --------- Users --------
+
+router.get("/users", async (req, res) => {
+  try {
+    const result = await user.find();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      Error: "This is an server side error in users",
+    });
+  }
+});
+
+router.post("/users", async (req, res) => {
+  try {
+    const newUser = new user(req.body);
+    const result = await newUser.save();
+    console.log(result);
+    res.status(200).send(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is an server side error in user",
+    });
+  }
+});
+
+// -------Jewelry----------
 router.get("/jewelry", async (req, res) => {
   try {
     const result = await jewelry.find();

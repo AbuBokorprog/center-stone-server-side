@@ -19,12 +19,7 @@ const JewelrySchema = new Schema({
   },
   Name: {
     type: "string",
-    // required: true,
-  },
-  popularity: {
-    type: "string",
-    enum: ["Low", "High"],
-    Default: "Low",
+    required: true,
   },
 });
 
