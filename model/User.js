@@ -7,6 +7,7 @@ const userSchema = new Schema({
   },
   email: {
     type: "string",
+    unique: true,
     require: true,
   },
   password: {
@@ -19,5 +20,5 @@ const userSchema = new Schema({
   },
 });
 
-const user = new model("user", userSchema);
-module.exports = user;
+const User = new model("user", userSchema);
+module.exports = User;

@@ -4,8 +4,8 @@ require("dotenv").config();
 var cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const jewelry = require("./model/jewelry");
-const user = require("./model/User");
 const blogs = require("./model/blogs");
+const User = require("./model/User");
 const port = process.env.PORT || 5000;
 const router = express.Router();
 
@@ -17,7 +17,7 @@ const uri = `mongodb+srv://${process.env.S3_BUCKET}:${process.env.SECRET_KEY}@cl
 
 router.get("/users", async (req, res) => {
   try {
-    const result = await user.find();
+    const result = await User.find();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({
@@ -28,13 +28,24 @@ router.get("/users", async (req, res) => {
 
 router.post("/users", async (req, res) => {
   try {
-    const newUser = new user(req.body);
+    const { email } = req.body;
+
+    const existingUser = await User.findOne({ email });
+
+    if (existingUser) {
+      return res.status(400).json({
+        error: "Email already exists",
+      });
+    }
+
+    const newUser = new User(req.body);
     const result = await newUser.save();
-    console.log(result);
+
     res.status(200).send(result);
   } catch (error) {
+    console.error(error);
     res.status(500).json({
-      error: "This is an server side error in user",
+      error: "Server side error in user creation",
     });
   }
 });
@@ -42,7 +53,7 @@ router.post("/users", async (req, res) => {
 router.get("/users/:email", async (req, res) => {
   try {
     const email = req.params.email;
-    const result = await user.find({ email: email });
+    const result = await User.find({ email: email });
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({
