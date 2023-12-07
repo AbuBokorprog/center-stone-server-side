@@ -18,6 +18,12 @@ const userSchema = new Schema({
     type: "string",
     require: true,
   },
+  Role: {
+    type: "string",
+    require: true,
+    enum: ["admin", "manager", "user"],
+    default: "user",
+  },
 });
 
 const User = new model("user", userSchema);
