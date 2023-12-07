@@ -5,6 +5,7 @@ var cors = require("cors");
 const { default: mongoose } = require("mongoose");
 const jewelry = require("./model/jewelry");
 const user = require("./model/User");
+const blogs = require("./model/blogs");
 const port = process.env.PORT || 5000;
 const router = express.Router();
 
@@ -79,6 +80,30 @@ router.get("/jewelry/:Name", async (req, res) => {
     console.log(name);
     const result = await jewelry.find({ Name: name });
     console.log(result);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error",
+    });
+  }
+});
+
+router.post("/blogs", async (req, res) => {
+  try {
+    const newBlog = new blogs(req.body);
+    const result = await newBlog.save();
+    console.log(result);
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error",
+    });
+  }
+});
+
+router.get("/blogs", async (req, res) => {
+  try {
+    const result = await blogs.find();
     res.status(200).json(result);
   } catch (error) {
     res.status(500).json({
