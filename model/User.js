@@ -1,7 +1,7 @@
 const { Schema, model } = require("mongoose");
 
 const userSchema = new Schema({
-  name: {
+  displayName: {
     type: "string",
     require: true,
   },
@@ -14,7 +14,7 @@ const userSchema = new Schema({
     type: "string",
     require: true,
   },
-  image: {
+  photoURL: {
     type: "string",
     require: true,
   },
