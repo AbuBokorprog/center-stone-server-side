@@ -6,6 +6,7 @@ const { default: mongoose } = require("mongoose");
 const jewelry = require("./model/jewelry");
 const blogs = require("./model/blogs");
 const User = require("./model/User");
+const AddCart = require("./model/addCart");
 const port = process.env.PORT || 5000;
 const router = express.Router();
 
@@ -119,6 +120,45 @@ router.get("/blogs", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "This is a server error",
+    });
+  }
+});
+
+router.post("/cart", async (req, res) => {
+  try {
+    const { title, image, cost, email } = req.body;
+    const existCart = await AddCart.findOne({
+      title,
+      image,
+      cost,
+      email,
+    });
+
+    if (existCart) {
+      existCart.quantity += 1;
+      const result = await existCart.save();
+      console.log(result);
+      res.status(200).json(result);
+    } else {
+      const newCart = new AddCart({ title, image, cost, email, quantity: 1 });
+      const result = await newCart.save();
+      res.status(200).json(result);
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      error: "This is a server error in cart",
+    });
+  }
+});
+
+router.get("/cart", async (req, res) => {
+  try {
+    const result = await AddCart.find();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in get cart",
     });
   }
 });
