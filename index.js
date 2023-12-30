@@ -178,9 +178,20 @@ router.get("/cart/:email", async (req, res) => {
 
 router.post("/wishlist", async (req, res) => {
   try {
-    const newWishlist = new wishlist(req.body);
-    const result = await newWishlist.save();
-    res.status(200).json(result);
+    const { email, title } = req.body;
+    const existCart = await wishlist.findOne({
+      title,
+      email,
+    });
+    if (existCart) {
+      res.status(500).json({
+        error: "already wishlist found",
+      });
+    } else {
+      const newWishlist = new wishlist(req.body);
+      const result = await newWishlist.save();
+      res.status(200).json(result);
+    }
   } catch (error) {
     res.status(500).json({
       error: "This is a server error in",
