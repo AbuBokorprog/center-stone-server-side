@@ -163,6 +163,18 @@ router.get("/cart", async (req, res) => {
   }
 });
 
+router.get("/cart/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const result = await AddCart.find({ email: email });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in get cart by email",
+    });
+  }
+});
+
 app.get("/", (req, res) => {
   res.send("Hello World!");
 });
