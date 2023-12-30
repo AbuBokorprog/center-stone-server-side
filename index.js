@@ -7,6 +7,7 @@ const jewelry = require("./model/jewelry");
 const blogs = require("./model/blogs");
 const User = require("./model/User");
 const AddCart = require("./model/addCart");
+const wishlist = require("./model/wishlist");
 const port = process.env.PORT || 5000;
 const router = express.Router();
 
@@ -171,6 +172,63 @@ router.get("/cart/:email", async (req, res) => {
   } catch (error) {
     res.status(500).json({
       error: "This is a server error in get cart by email",
+    });
+  }
+});
+
+router.post("/wishlist", async (req, res) => {
+  try {
+    const newWishlist = new wishlist(req.body);
+    const result = await newWishlist.save();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in",
+    });
+  }
+});
+router.get("/wishlist", async (req, res) => {
+  try {
+    const result = await wishlist.find();
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in",
+    });
+  }
+});
+router.get("/wishlist/:email", async (req, res) => {
+  try {
+    const email = req.params.email;
+    const result = await wishlist.find({ email: email });
+    res.status(200).json(result);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in",
+    });
+  }
+});
+
+router.delete("/wishlist/:email/:title", async (req, res) => {
+  try {
+    const { email, title } = req.params;
+    const deletedItem = await wishlist.findOneAndDelete({
+      email: email,
+      title: title,
+    });
+    if (deletedItem) {
+      res.status(200).json({
+        message: "Wishlist item deleted successfully",
+        deletedItem,
+      });
+    } else {
+      res.status(404).json({
+        error: "Wishlist item not found",
+      });
+    }
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in wishlist delete",
     });
   }
 });

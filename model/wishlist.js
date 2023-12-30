@@ -21,6 +21,10 @@ const wishlistSchema = new Schema({
     type: "string",
     required: true,
   },
+  email: {
+    type: String,
+    required: true,
+  },
 });
 
 const wishlist = new model("wishlist", wishlistSchema);
