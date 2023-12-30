@@ -18,6 +18,8 @@ const AddCartSchema = new Schema({
   },
   quantity: {
     type: Number,
+    min: 1,
+    max: 10,
   },
 });
 

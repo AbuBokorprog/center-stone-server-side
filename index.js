@@ -176,6 +176,39 @@ router.get("/cart/:email", async (req, res) => {
   }
 });
 
+router.patch("/cart/:cartId", async (req, res) => {
+  try {
+    const { cartId } = req.params;
+    const { quantity } = req.body;
+    const updatedCart = await AddCart.findByIdAndUpdate(
+      cartId,
+      { $set: { quantity: quantity } },
+      { new: true }
+    );
+    if (!updatedCart) {
+      return res.status(404).json({ error: "Cart item not found" });
+    }
+
+    res.status(200).json(updatedCart);
+  } catch (error) {
+    res.status(500).json({
+      error: "This is a server error in get cart",
+    });
+  }
+});
+
+router.delete("/cart/:email/:title", async (req, res) => {
+  try {
+    const { email, title } = req.params;
+    const deletedItem = await AddCart.findOneAndDelete({ email, title });
+    res.status(200).json(deletedItem);
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
 router.post("/wishlist", async (req, res) => {
   try {
     const { email, title } = req.body;
