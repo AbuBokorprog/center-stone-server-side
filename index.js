@@ -208,6 +208,17 @@ router.delete("/cart/:email/:title", async (req, res) => {
     });
   }
 });
+router.delete("/cart/:email", async (req, res) => {
+  try {
+    const { email } = req.params;
+    const deletedItem = await AddCart.deleteMany({ email });
+    res.status(200).json(deletedItem);
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
 
 router.post("/wishlist", async (req, res) => {
   try {
